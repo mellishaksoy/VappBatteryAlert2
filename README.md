@@ -1038,3 +1038,276 @@ namespace Platform360.Devices.SDK.Example.ConsoleApp
     }
 }
 ```
+
+Device Reboot Data
+-----
+```csharp
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceRebootData
+    {
+        public string DeviceRebootId { get; set; }
+        public string Name { get; set; }
+        public bool? IsFactoryReset { get; set; }
+        public bool? Reboot { get; set; }
+    }
+}
+```
+Device Reboot Response
+-----
+```csharp
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceRebootResult
+    {
+        public string DeviceRebootId { get; set; }
+        public string Name { get; set; }
+        public bool? IsFactoryReset { get; set; }
+        public bool? Reboot { get; set; }
+    }
+}
+```
+
+Device Battery Data
+-----
+```csharp
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceBatteryData
+    {
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
+    }
+}
+
+```
+Device Battery Response
+-----
+```csharp
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceBatteryResult
+    {
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
+    }
+}
+```
+
+Device Memory Data
+-----
+```csharp
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceMemoryData
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+}
+```
+Device Memory Response
+-----
+```csharp
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceMemoryResult
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+}
+```
+
+Device General Info Data
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceGeneralInfoData
+    {
+        public string PhysicalDeviceInfoId { get; set; }
+        public string Name { get; set; }
+        public string DeviceLabel { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string DeviceType { get; set; }
+        public string FirmwareVersion { get; set; }
+        public string SoftwareVersion { get; set; }
+        public string HardwareVersion { get; set; }
+        public string ManufacturerDetailsLink { get; set; }
+        public string ManufacturingDate { get; set; }
+        public string SubModel { get; set; }
+        public string DeviceName { get; set; }
+        public string OsVersion { get; set; }
+        public string Country { get; set; }
+        public string Location { get; set; }
+        public string SystemTime { get; set; }
+        public List<string> SupportURL { get; set; }
+        public List<string> PresentationURL { get; set; }
+        public List<string> Protocol { get; set; }
+
+        public DeviceGeneralInfoData()
+        {
+            SupportURL = new List<string>();
+            PresentationURL = new List<string>();
+            Protocol = new List<string>();
+        }
+    }
+}
+
+```
+Device General Info Response
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class DeviceGeneralInfoResult
+    {
+        public string PhysicalDeviceInfoId { get; set; }
+        public string Name { get; set; }
+        public string DeviceLabel { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string DeviceType { get; set; }
+        public string FirmwareVersion { get; set; }
+        public string SoftwareVersion { get; set; }
+        public string HardwareVersion { get; set; }
+        public string ManufacturerDetailsLink { get; set; }
+        public string ManufacturingDate { get; set; }
+        public string SubModel { get; set; }
+        public string DeviceName { get; set; }
+        public string OsVersion { get; set; }
+        public string Country { get; set; }
+        public string Location { get; set; }
+        public string SystemTime { get; set; }
+        public List<string> SupportURL { get; set; }
+        public List<string> PresentationURL { get; set; }
+        public List<string> Protocol { get; set; }
+        public DeviceGeneralInfoResult()
+        {
+            SupportURL = new List<string>();
+            PresentationURL = new List<string>();
+            Protocol = new List<string>();
+        }
+    }
+}
+
+```
+
+Device Area Network Info Data
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class AreaNetworkInfoData
+    {
+        public string AreaNetworkInfoId { get; set; }
+        public string Name { get; set; }
+        public string AreaNetworkType { get; set; }
+        public List<string> ListOfDevices { get; set; }
+
+        public AreaNetworkInfoData()
+        {
+            ListOfDevices = new List<string>();
+        }
+    }
+}
+
+```
+Device Area Network Info Response
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class AreaNetworkInfoResult
+    {
+        public string AreaNetworkInfoId { get; set; }
+        public string Name { get; set; }
+        public string AreaNetworkType { get; set; }
+        public List<string> ListOfDevices { get; set; }
+
+        public AreaNetworkInfoResult()
+        {
+            ListOfDevices = new List<string>();
+        }
+    }
+}
+
+```
+
+Device Area Network Device Info Data
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class AreaNetworkDeviceInfoData
+    {
+        public string AreaNetworkDeviceInfoId { get; set; }
+        public string Name { get; set; }
+        public string DevID { get; set; }
+        public string DevType { get; set; }
+        public string AreaNetworkId { get; set; }
+        public int? SleepInterval { get; set; }
+        public int? SleepDuration { get; set; }
+        public string DevStatus { get; set; }
+        public List<string> ListOfNeighbors { get; set; }
+
+        public AreaNetworkDeviceInfoData()
+        {
+            ListOfNeighbors = new List<string>();
+        }
+    }
+}
+
+```
+Device Area Network Device Info Response
+-----
+```csharp
+using System.Collections.Generic;
+
+namespace Platform360.Devices.SDK.Contracts.DeviceManagement
+{
+    public class AreaNetworkDeviceInfoResult
+    {
+        public string AreaNetworkDeviceInfoId { get; set; }
+        public string Name { get; set; }
+        public string DevID { get; set; }
+        public string DevType { get; set; }
+        public string AreaNetworkId { get; set; }
+        public int? SleepInterval { get; set; }
+        public int? SleepDuration { get; set; }
+        public string DevStatus { get; set; }
+        public List<string> ListOfNeighbors { get; set; }
+
+        public AreaNetworkDeviceInfoResult()
+        {
+            ListOfNeighbors = new List<string>();
+        }
+    }
+}
+
+```
+
