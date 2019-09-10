@@ -1043,26 +1043,26 @@ Device Reboot Data
 -----
 ```csharp
 
-    public class DeviceRebootData
-    {
-        public string DeviceRebootId { get; set; }
-        public string Name { get; set; }
-        public bool? IsFactoryReset { get; set; }
-        public bool? Reboot { get; set; }
-    }
+public class DeviceRebootData
+{
+    public string DeviceRebootId { get; set; }
+    public string Name { get; set; }
+    public bool? IsFactoryReset { get; set; }
+    public bool? Reboot { get; set; }
+}
 
 ```
 Device Reboot Response
 -----
 ```csharp
 
-    public class DeviceRebootResult
-    {
-        public string DeviceRebootId { get; set; }
-        public string Name { get; set; }
-        public bool? IsFactoryReset { get; set; }
-        public bool? Reboot { get; set; }
-    }
+public class DeviceRebootResult
+{
+    public string DeviceRebootId { get; set; }
+    public string Name { get; set; }
+    public bool? IsFactoryReset { get; set; }
+    public bool? Reboot { get; set; }
+}
 
 ```
 
@@ -1070,13 +1070,13 @@ Device Battery Data
 -----
 ```csharp
 
-    public class DeviceBatteryData
-    {
-        public string BatteryId { get; set; }
-        public string Name { get; set; }
-        public int? BatteryLevel { get; set; }
-        public BatteryStatus? BatteryStatus { get; set; }
-    }
+public class DeviceBatteryData
+{
+    public string BatteryId { get; set; }
+    public string Name { get; set; }
+    public int? BatteryLevel { get; set; }
+    public BatteryStatus? BatteryStatus { get; set; }
+}
 
 
 ```
@@ -1084,68 +1084,67 @@ Device Battery Response
 -----
 ```csharp
 
-    public class DeviceBatteryResult
-    {
-        public string BatteryId { get; set; }
-        public string Name { get; set; }
-        public int? BatteryLevel { get; set; }
-        public BatteryStatus? BatteryStatus { get; set; }
-    }
+public class DeviceBatteryResult
+{
+    public string BatteryId { get; set; }
+    public string Name { get; set; }
+    public int? BatteryLevel { get; set; }
+    public BatteryStatus? BatteryStatus { get; set; }
+}
 
 ```
 
 Device Memory Data
 -----
 ```csharp
-	public class DeviceMemoryData
-    {
-        public string MemoryId { get; set; }
-        public string Name { get; set; }
-        public long? TotalMemory { get; set; }
-        public long? AvailableMemory { get; set; }
-    }
+public class DeviceMemoryData
+{
+    public string MemoryId { get; set; }
+    public string Name { get; set; }
+    public long? TotalMemory { get; set; }
+    public long? AvailableMemory { get; set; }
+}
 
 ```
 Device Memory Response
 -----
 ```csharp
-	public class DeviceMemoryResult
-    {
-        public string MemoryId { get; set; }
-        public string Name { get; set; }
-        public long? TotalMemory { get; set; }
-        public long? AvailableMemory { get; set; }
-    }
+public class DeviceMemoryResult
+{
+    public string MemoryId { get; set; }
+    public string Name { get; set; }
+    public long? TotalMemory { get; set; }
+    public long? AvailableMemory { get; set; }
+}
 
 ```
 
 Device General Info Data
 -----
 ```csharp
-	public class DeviceGeneralInfoData
-    {
-        public string PhysicalDeviceInfoId { get; set; }
-        public string Name { get; set; }
-        public string DeviceLabel { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string DeviceType { get; set; }
-        public string FirmwareVersion { get; set; }
-        public string SoftwareVersion { get; set; }
-        public string HardwareVersion { get; set; }
-        public string ManufacturerDetailsLink { get; set; }
-        public string ManufacturingDate { get; set; }
-        public string SubModel { get; set; }
-        public string DeviceName { get; set; }
-        public string OsVersion { get; set; }
-        public string Country { get; set; }
-        public string Location { get; set; }
-        public string SystemTime { get; set; }
-        public List<string> SupportURL { get; set; }
-        public List<string> PresentationURL { get; set; }
-        public List<string> Protocol { get; set; }
-
-    }
+public class DeviceGeneralInfoData
+{
+    public string PhysicalDeviceInfoId { get; set; }
+    public string Name { get; set; }
+    public string DeviceLabel { get; set; }
+    public string Manufacturer { get; set; }
+    public string Model { get; set; }
+    public string DeviceType { get; set; }
+    public string FirmwareVersion { get; set; }
+    public string SoftwareVersion { get; set; }
+    public string HardwareVersion { get; set; }
+    public string ManufacturerDetailsLink { get; set; }
+    public string ManufacturingDate { get; set; }
+    public string SubModel { get; set; }
+    public string DeviceName { get; set; }
+    public string OsVersion { get; set; }
+    public string Country { get; set; }
+    public string Location { get; set; }
+    public string SystemTime { get; set; }
+    public List<string> SupportURL { get; set; }
+    public List<string> PresentationURL { get; set; }
+    public List<string> Protocol { get; set; }
+}
 
 
 ```
@@ -1153,30 +1152,30 @@ Device General Info Response
 -----
 ```csharp
 
-    public class DeviceGeneralInfoResult
-    {
-        public string PhysicalDeviceInfoId { get; set; }
-        public string Name { get; set; }
-        public string DeviceLabel { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string DeviceType { get; set; }
-        public string FirmwareVersion { get; set; }
-        public string SoftwareVersion { get; set; }
-        public string HardwareVersion { get; set; }
-        public string ManufacturerDetailsLink { get; set; }
-        public string ManufacturingDate { get; set; }
-        public string SubModel { get; set; }
-        public string DeviceName { get; set; }
-        public string OsVersion { get; set; }
-        public string Country { get; set; }
-        public string Location { get; set; }
-        public string SystemTime { get; set; }
-        public List<string> SupportURL { get; set; }
-        public List<string> PresentationURL { get; set; }
-        public List<string> Protocol { get; set; }
+public class DeviceGeneralInfoResult
+{
+    public string PhysicalDeviceInfoId { get; set; }
+    public string Name { get; set; }
+    public string DeviceLabel { get; set; }
+    public string Manufacturer { get; set; }
+    public string Model { get; set; }
+    public string DeviceType { get; set; }
+    public string FirmwareVersion { get; set; }
+    public string SoftwareVersion { get; set; }
+    public string HardwareVersion { get; set; }
+    public string ManufacturerDetailsLink { get; set; }
+    public string ManufacturingDate { get; set; }
+    public string SubModel { get; set; }
+    public string DeviceName { get; set; }
+    public string OsVersion { get; set; }
+    public string Country { get; set; }
+    public string Location { get; set; }
+    public string SystemTime { get; set; }
+    public List<string> SupportURL { get; set; }
+    public List<string> PresentationURL { get; set; }
+    public List<string> Protocol { get; set; }
         
-    }
+}
 
 
 ```
@@ -1185,14 +1184,13 @@ Device Area Network Info Data
 -----
 ```csharp
 
-    public class AreaNetworkInfoData
-    {
-        public string AreaNetworkInfoId { get; set; }
-        public string Name { get; set; }
-        public string AreaNetworkType { get; set; }
-        public List<string> ListOfDevices { get; set; }
-
-    }
+public class AreaNetworkInfoData
+{
+    public string AreaNetworkInfoId { get; set; }
+    public string Name { get; set; }
+    public string AreaNetworkType { get; set; }
+    public List<string> ListOfDevices { get; set; }
+}
 
 
 ```
@@ -1200,14 +1198,13 @@ Device Area Network Info Response
 -----
 ```csharp
 
-    public class AreaNetworkInfoResult
-    {
-        public string AreaNetworkInfoId { get; set; }
-        public string Name { get; set; }
-        public string AreaNetworkType { get; set; }
-        public List<string> ListOfDevices { get; set; }
-
-    }
+public class AreaNetworkInfoResult
+{
+    public string AreaNetworkInfoId { get; set; }
+    public string Name { get; set; }
+    public string AreaNetworkType { get; set; }
+    public List<string> ListOfDevices { get; set; }
+}
 
 
 ```
@@ -1215,38 +1212,37 @@ Device Area Network Info Response
 Device Area Network Device Info Data
 -----
 ```csharp
-	public class AreaNetworkDeviceInfoData
-    {
-        public string AreaNetworkDeviceInfoId { get; set; }
-        public string Name { get; set; }
-        public string DevID { get; set; }
-        public string DevType { get; set; }
-        public string AreaNetworkId { get; set; }
-        public int? SleepInterval { get; set; }
-        public int? SleepDuration { get; set; }
-        public string DevStatus { get; set; }
-        public List<string> ListOfNeighbors { get; set; }
-
-    }
+public class AreaNetworkDeviceInfoData
+{
+    public string AreaNetworkDeviceInfoId { get; set; }
+    public string Name { get; set; }
+    public string DevID { get; set; }
+    public string DevType { get; set; }
+    public string AreaNetworkId { get; set; }
+    public int? SleepInterval { get; set; }
+    public int? SleepDuration { get; set; }
+    public string DevStatus { get; set; }
+    public List<string> ListOfNeighbors { get; set; }
+}
 
 
 ```
 Device Area Network Device Info Response
 -----
 ```csharp
-	public class AreaNetworkDeviceInfoResult
-    {
-        public string AreaNetworkDeviceInfoId { get; set; }
-        public string Name { get; set; }
-        public string DevID { get; set; }
-        public string DevType { get; set; }
-        public string AreaNetworkId { get; set; }
-        public int? SleepInterval { get; set; }
-        public int? SleepDuration { get; set; }
-        public string DevStatus { get; set; }
-        public List<string> ListOfNeighbors { get; set; }
+public class AreaNetworkDeviceInfoResult
+{
+	public string AreaNetworkDeviceInfoId { get; set; }
+	public string Name { get; set; }
+	public string DevID { get; set; }
+	public string DevType { get; set; }
+    public string AreaNetworkId { get; set; }
+    public int? SleepInterval { get; set; }
+    public int? SleepDuration { get; set; }
+    public string DevStatus { get; set; }
+    public List<string> ListOfNeighbors { get; set; }
 
-    }
+}
 
 ```
 
