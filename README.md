@@ -1225,7 +1225,6 @@ public class AreaNetworkDeviceInfoData
     public List<string> ListOfNeighbors { get; set; }
 }
 
-
 ```
 Device Area Network Device Info Response
 -----
@@ -1236,12 +1235,11 @@ public class AreaNetworkDeviceInfoResult
 	public string Name { get; set; }
 	public string DevID { get; set; }
 	public string DevType { get; set; }
-    public string AreaNetworkId { get; set; }
-    public int? SleepInterval { get; set; }
-    public int? SleepDuration { get; set; }
-    public string DevStatus { get; set; }
-    public List<string> ListOfNeighbors { get; set; }
-
+	public string AreaNetworkId { get; set; }
+	public int? SleepInterval { get; set; }
+	public int? SleepDuration { get; set; }
+	public string DevStatus { get; set; }
+	public List<string> ListOfNeighbors { get; set; }
 }
 
 ```
