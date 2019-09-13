@@ -2,6 +2,233 @@
 Usage
 -----
 
+1.Device Registration Method
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var mqttBrokerPoa = "127.0.0.1";
+            var mqttBrokerPort = 1883;
+            int timeOut = 120;
+            int keepAlive = 10;
+
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+           .WithClientId("CLIENT-ID")
+           .WithCSEId("CSE-ID")
+           .WithMqttOptions(mqttBrokerPoa, mqttBrokerPort, timeOut, keepAlive)
+           .Build();
+
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            var deviceName = "AE-" + Guid.NewGuid().ToString();
+            var poa = new List<string>() { "http://localhost:3005" };
+
+            var registerDeviceResult = await deviceService.RegisterDeviceAsync(deviceName, poa);
+
+            Console.WriteLine(registerDeviceResult.DeviceId);
+        }
+    }
+}
+
+
+```
+
+DeviceRegistrationResult
+-----
+
+```csharp
+public class DeviceRegistrationResult
+    {
+        public string DeviceId { get; set; }
+        public string DeviceName { get; set; }
+        public IList<string> PoA { get; set; }
+    }
+
+```
+
+2.	Connect to Platform Method
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var mqttBrokerPoa = "127.0.0.1";
+            var mqttBrokerPort = 1883;
+            int timeOut = 120;
+            int keepAlive = 10;
+
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+           .WithClientId("CLIENT-ID")
+           .WithCSEId("CSE-ID")
+           .WithMqttOptions(mqttBrokerPoa, mqttBrokerPort, timeOut, keepAlive)
+           .Build();
+
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            await deviceService.ConnectToPlatformAsync();
+        }
+    }
+}
+
+
+```
+
+3.	Create Sensor Method
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var mqttBrokerPoa = "127.0.0.1";
+            var mqttBrokerPort = 1883;
+            int timeOut = 120;
+            int keepAlive = 10;
+
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+           .WithClientId("CLIENT-ID")
+           .WithCSEId("CSE-ID")
+           .WithMqttOptions(mqttBrokerPoa, mqttBrokerPort, timeOut, keepAlive)
+           .Build();
+
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            var sensorName = "CONTAINE-" + Guid.NewGuid().ToString();
+            var createSensorResult = await deviceService.CreateSensorAsync(sensorName, true);
+            Console.WriteLine(createSensorResult.SensorId);
+        }
+    }
+}
+
+
+```
+
+3.	SensorCreationResult
+-----
+
+```csharp
+public class SensorCreationResult
+   {
+       public string SensorId { get; set; }
+       public string Name { get; set; }
+   }
+
+
+
+```
+
+4.	Delete Sensor Method
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var mqttBrokerPoa = "127.0.0.1";
+            var mqttBrokerPort = 1883;
+            int timeOut = 120;
+            int keepAlive = 10;
+
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+           .WithClientId("CLIENT-ID")
+           .WithCSEId("CSE-ID")
+           .WithMqttOptions(mqttBrokerPoa, mqttBrokerPort, timeOut, keepAlive)
+           .Build();
+
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+            var sensorDeletionResult = await deviceService.DeleteSensorAsync("SensorID");
+        }
+    }
+}
+
+```
+
+SensorDeletionResult
+-----
+
+```csharp
+public class SensorDeletionResult
+   {
+       public string SensorId { get; set; }
+       public string SensorName { get; set; }
+   }
+
+
+```
+
+5.	Push Sensor Data to Platform Method
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var mqttBrokerPoa = "127.0.0.1";
+            var mqttBrokerPort = 1883;
+            int timeOut = 120;
+            int keepAlive = 10;
+
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+           .WithClientId("CLIENT-ID")
+           .WithCSEId("CSE-ID")
+           .WithMqttOptions(mqttBrokerPoa, mqttBrokerPort, timeOut, keepAlive)
+           .Build();
+
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+            await deviceService.PushSensorDataToPlatformAsync("SensorID", "Pushed Data");
+        }
+    }
+}
+
+```
+
+
 Reboot Create Example
 -----
 
