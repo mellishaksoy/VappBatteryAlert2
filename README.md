@@ -1,3 +1,294 @@
+Device Registration Method
+
+Request
+
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Client.RegistrationService;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Definition of device Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt Server PoA", 1883, 120)
+                    .Build();
+            
+            // Registration Service Call
+            IRegistrationServiceFactory _registrationServiceFactory = new RegistrationServiceFactory();
+            var _registrationService = _registrationServiceFactory.CreateRegistrationService(deviceMqttClientOptions);
+            
+            // Device Registration to system
+            var deviceRegistrationResult = await _registrationService.RegisterDeviceAsync("Device Name", new List<string> { "http://pointOfAccessUrl.com" });
+            Console.WriteLine("Device ID: " + deviceRegistrationResult.DeviceId + " Device Name: " +
+                deviceRegistrationResult.DeviceName +" Point of Access: "+ deviceRegistrationResult.PoA);
+
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+
+Response
+
+-----
+
+```csharp
+public class DeviceRegistrationResult
+    {
+        public string DeviceId { get; set; }
+        public string DeviceName { get; set; }
+        public IList<string> PoA { get; set; }
+    }
+
+```
+-----
+
+Connect to Platform Method
+
+Request
+
+-----
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+            
+            // Device Service Call
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var _deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            // Device Service Connection To Platform
+            // Here the related resources and properties are loaded to device service objects
+            await _deviceService.ConnectToPlatformAsync();
+
+            Console.ReadLine();
+            
+
+        }
+    }
+}
+
+```
+
+
+
+1.3.	Sensor Related Methods
+1.3.1.	Sensor Creation Method
+
+Request
+-----
+
+```csharp
+	using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Service Call
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var _deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            // Device Service Connection To Platform
+            // Here the related resources and properties are loaded to device service objects
+            await _deviceService.ConnectToPlatformAsync();
+
+            // Sensor Creation
+            // Parameters: Sensor Name and isBidirectional
+            var sensorResult = await _deviceService.CreateSensorAsync("Sensor Name", true);
+            Console.WriteLine("Sensor Id: " + sensorResult.SensorId + "Sensor Name: " + sensorResult.Name);
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+Response
+-----
+
+```csharp
+	public class SensorCreationResult
+    {
+        public string SensorId { get; set; }
+        public string Name { get; set; }
+    }
+```
+1.3.2.	Sensor Deletion Method
+
+Request
+-----
+
+```csharp
+	using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Service Call
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var _deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            // Device Service Connection To Platform
+            // Here the related resources and properties are loaded to device service objects
+            await _deviceService.ConnectToPlatformAsync();
+
+            // Sensor Creation
+            // Parameters: Sensor Name and isBidirectional
+            var sensorResult = await _deviceService.CreateSensorAsync("Sensor Name", true);
+            Console.WriteLine("Sensor Id: " + sensorResult.SensorId + "Sensor Name: " + sensorResult.Name);
+
+            // Sensor Deletion 
+            // Parameters: Sensor Id
+            var deleteSensorResult = await _deviceService.DeleteSensorAsync(sensorResult.SensorId);
+            Console.WriteLine("Sensor Id: " + deleteSensorResult.SensorId + "Sensor Name: " + deleteSensorResult.SensorName);
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+Response
+-----
+
+```csharp
+	public class SensorDeletionResult
+    {
+        public string SensorId { get; set; }
+        public string SensorName { get; set; }
+    }
+```
+
+1.3.3.	Push Sensor Data to Platform Method
+
+Request
+-----
+
+```csharp
+	using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Service Call
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var _deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            // Device Service Connection To Platform
+            // Here the related resources and properties are loaded to device service objects
+            await _deviceService.ConnectToPlatformAsync();
+
+            // Sensor Creation
+            // Parameters: Sensor Name and isBidirectional
+            var sensorResult = await _deviceService.CreateSensorAsync("Sensor Name", true);
+            Console.WriteLine("Sensor Id: " + sensorResult.SensorId + "Sensor Name: " + sensorResult.Name);
+
+            // Add Sensor Data 
+            await _deviceService.PushSensorDataToPlatformAsync("sensor Id", "sensor message");
+            // Add Sensor Data as raw value and unit
+            await _deviceService.PushSensorDataToPlatformAsync("sensor Id", "raw value of sensor", "unit of sensor value", "extracted data");
+            
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+
+-----------------
+-----------------
+BURAYA KADAR
+------------------
+------------------
+
+1.4.	Battery Related Methods
+1.4.1.	Create Battery Method
+Request
+-----
+
+```csharp
+	public class SensorDeletionRequestDto 
+    {
+        public string SensorId { get; set; }
+    }
+
+```
+Response
+-----
+
+```csharp
+	public class SensorDeletionResponseDto 
+    {
+        public string SensorId { get; set; }
+        public IList<string> NotificationUrls{ get; set; }
+		public string Identifier { get; set; }
+    }
+```
+
 
 Usage
 -----
