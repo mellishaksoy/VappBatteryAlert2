@@ -259,11 +259,6 @@ namespace Platform360.Devices.SDK.Example.ConsoleApp
 
 ```
 
------------------
------------------
-BURAYA KADAR
-------------------
-------------------
 
 1.4.	Battery Related Methods
 1.4.1.	Create Battery Method
@@ -271,23 +266,455 @@ Request
 -----
 
 ```csharp
-	public class SensorDeletionRequestDto 
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
     {
-        public string SensorId { get; set; }
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var createdBatteryResult = await deviceManagementService.CreateBatteryAsync(new DeviceBatteryCreateData()
+            {
+                Name = "BatteryName",
+                BatteryLevel = 100,
+                BatteryStatus = BatteryStatus.Normal
+            });
+            Console.WriteLine(createdBatteryResult.BatteryId);
+        }
     }
+}
 
 ```
 Response
 -----
 
 ```csharp
-	public class SensorDeletionResponseDto 
+	public class DeviceBatteryResult
     {
-        public string SensorId { get; set; }
-        public IList<string> NotificationUrls{ get; set; }
-		public string Identifier { get; set; }
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
     }
 ```
+
+1.4.2.	Retrieve Battery Method
+Request
+-----
+```csharp
+	using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var retrieveBatteryResult = await deviceManagementService.RetrieveBatteryAsync("Battery Id");
+            Console.WriteLine(retrieveBatteryResult.BatteryId);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceBatteryResult
+    {
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
+    }
+```
+
+
+1.4.3.	Update Battery Method
+
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var updateBatteryResult = await deviceManagementService.UpdateBatteryAsync(new DeviceBatteryUpdateData
+            {
+                BatteryId = "Battery Id",
+                BatteryLevel = 1,
+                BatteryStatus = BatteryStatus.LowBattery
+            });
+            Console.WriteLine(updateBatteryResult.BatteryId);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceBatteryResult
+    {
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
+    }
+```
+
+1.4.4.	Delete Battery Method
+
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var deleteBatteryResult = await deviceManagementService.DeleteBatteryAsync("battery Id");
+            Console.WriteLine(deleteBatteryResult.BatteryId);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceBatteryResult
+    {
+        public string BatteryId { get; set; }
+        public string Name { get; set; }
+        public int? BatteryLevel { get; set; }
+        public BatteryStatus? BatteryStatus { get; set; }
+    }
+```
+
+1.5.	Memory Related Methods
+1.5.1.	Create Memory Method
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var createMemoryResult = await deviceManagementService.CreateMemoryAsync(new DeviceMemoryCreateData
+            {
+                Name = "Memory Name",
+                AvailableMemory = 4194304000, // 500 MB
+                TotalMemory = 8589934592 // 1 GB
+            });
+            Console.WriteLine(createMemoryResult.MemoryId);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceMemoryResult
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+```
+
+
+1.5.2.	Retrieve Memory Method
+
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var retrieveMemoryResult = await deviceManagementService.RetrieveMemoryAsync("memory Id");
+            Console.WriteLine("Available Memory: " + retrieveMemoryResult.AvailableMemory);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceMemoryResult
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+```
+
+1.5.3.	Update Memory Method
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var updateMemoryResult = await deviceManagementService.UpdateMemoryAsync(new DeviceMemoryUpdateData {
+                MemoryId = "memory Id",
+                AvailableMemory = 1677721600 // 200 MB
+            });
+            Console.WriteLine(updateMemoryResult.AvailableMemory);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceMemoryResult
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+```
+
+1.5.4.	Delete Memory Method
+
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Call
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var deleteMemoryResult = await deviceManagementService.DeleteMemoryAsync("memory Id");
+            Console.WriteLine(deleteMemoryResult.AvailableMemory);
+        }
+    }
+}
+```
+
+
+Response
+-----
+```csharp
+	public class DeviceMemoryResult
+    {
+        public string MemoryId { get; set; }
+        public string Name { get; set; }
+        public long? TotalMemory { get; set; }
+        public long? AvailableMemory { get; set; }
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------
+---------------------------
+
+BURAYA KADAR
+
+----------------------------
+-----------------------------
 
 
 Usage
