@@ -1090,15 +1090,535 @@ namespace Platform360.Devices.SDK.Example.ConsoleApp
 ```
 
 
+1.8.	Area Network Device Info Related Methods
+1.8.1.	Create Area Network Device Info Method
+
+```csharp
+
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Device Info Create Request
+            var createAreaNetworkDeviceInfoResult = await deviceManagementService.CreateAreaNetworkDeviceInfoAsync(new DeviceAreaNetworkDeviceInfoCreateData
+            {
+                Name = "Name",
+                DevID = "DevID",
+                DevType = "DevType",
+                AreaNetworkId = "AreaNetworkId",
+                ListOfNeighbors = new List<string> { "ListOfNeighbors"}
+            });
+            Console.WriteLine(createAreaNetworkDeviceInfoResult.AreaNetworkDeviceInfoId);
+        }
+    }
+}
+```
+
+Response
+```csharp
+ public class DeviceAreaNetworkDeviceInfoResult
+    {
+        public string AreaNetworkDeviceInfoId { get; set; }
+
+        public string Name { get; set; }
+
+        public string DevID { get; set; }
+
+        public string DevType { get; set; }
+
+        public string AreaNetworkId { get; set; }
+
+        public int? SleepInterval { get; set; }
+
+        public int? SleepDuration { get; set; }
+
+        public string DevStatus { get; set; }
+
+        public List<string> ListOfNeighbors { get; set; }
+    }
+```
+
+1.8.2.	Retrieve Area Network Device Info Method
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Device Info Retrieve Request
+            var retrieveAreaNetworkDeviceInfoResult = await deviceManagementService.RetrieveAreaNetworkDeviceInfoAsync("AreaNetworkDeviceInfoId");
+            Console.WriteLine(retrieveAreaNetworkDeviceInfoResult.Name);
+        }
+    }
+}
+```
+
+1.8.3.	Update Area Network Device Info Method
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Device Info Update Request
+            var updateAreaNetworkDeviceInfoResult = await deviceManagementService.UpdateAreaNetworkDeviceInfoAsync(new DeviceAreaNetworkDeviceInfoUpdateData
+            {
+                AreaNetworkDeviceInfoId = "AreaNetworkDeviceInfoId",
+                DevStatus = "Sleeping"
+            });
+            Console.WriteLine(updateAreaNetworkDeviceInfoResult.DevStatus);
+        }
+    }
+}
+```
+
+1.8.4.	Delete Area Network Device Info Method
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Device Info Delete Request
+            var deleteAreaNetworkDeviceInfoResult = await deviceManagementService.DeleteAreaNetworkDeviceInfoAsync("AreaNetworkDeviceInfoId");
+            Console.WriteLine(deleteAreaNetworkDeviceInfoResult.AreaNetworkDeviceInfoId);
+        }
+    }
+}
+```
 
 
 
 
+1.9.	Reboot Related Methods 
+1.9.1.	Create Reboot Method
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Reboot Create Request
+            var createRebootResult = await deviceManagementService.CreateRebootAsync(new DeviceRebootCreateData
+            {
+                Name = "Name"
+            });
+            Console.WriteLine(createRebootResult.DeviceRebootId);
+        }
+    }
+}
+```
+
+Response 
+```csharp
+public class DeviceRebootResult
+    {
+        public string DeviceRebootId { get; set; }
+        public string Name { get; set; }
+        public bool? IsFactoryReset { get; set; }
+        public bool? Reboot { get; set; }
+    }
+```
+
+1.9.2.	Retrieve Reboot Method
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Reboot Retrieve Request
+            var retrieveRebootResult = await deviceManagementService.RetrieveRebootAsync("DeviceRebootId");
+            Console.WriteLine(retrieveRebootResult.Name);
+        }
+    }
+}
+```
+1.9.3.	Update Reboot Method
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Reboot Update Request
+            var updateRebootResult = await deviceManagementService.UpdateRebootAsync(new DeviceRebootUpdateData
+            {
+                DeviceRebootId = "DeviceRebootId",
+                Reboot = true
+            });
+            Console.WriteLine(updateRebootResult.DeviceRebootId);
+        }
+    }
+}
+```
+
+1.9.4.	Delete Reboot Method
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Reboot Delete Request
+            var deleteRebootResult = await deviceManagementService.DeleteRebootAsync("DeviceRebootId");
+            Console.WriteLine(deleteRebootResult.Name);
+        }
+    }
+}
+```
+
+
+1.10.	Firmware Related Methods
+1.10.1.	Create Firmware Method
+Request
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Create Update Request
+            var createFirmwareResult = await deviceManagementService.CreateFirmwareAsync(new DeviceFirmwareCreateData
+            {
+                Name = "Firmware Name",
+                Version = "Version",
+                URL = "URL",
+                Update = true
+            });
+            Console.WriteLine(createFirmwareResult.DeviceFirmwareId);
+        }
+    }
+}
+```
+
+Response
+```csharp
+public class DeviceFirmwareResult
+    {
+        public string DeviceFirmwareId { get; set; }
+        public string Version { get; set; }
+        public string Name { get; set; }
+        public string URL { get; set; }
+        public bool? Update { get; set; }
+        public ActionStatus UpdateStatus { get; set; }
+    }
+```
+
+
+1.10.2.	Retrieve Firmware Method
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Firmware Retrieve Request
+            var retrieveFirmwareResult = await deviceManagementService.RetrieveFirmwareAsync("DeviceFirmwareId");
+            Console.WriteLine(retrieveFirmwareResult.Version);
+        }
+    }
+}
+```
 
 
 
+1.10.3.	Update Firmware Method
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Firmware Update Request
+            var updateFirmwareResult = await deviceManagementService.UpdateFirmwareAsync(new DeviceFirmwareUpdateData
+            {
+                Version = "Update Version",
+                Update = true
+            });
+            Console.WriteLine(createFirmwareResult.Version);
+        }
+    }
+}
+```
 
 
+1.10.4.	Delete Firmware Method
+
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Firmware Delete Request
+            var deleteFirmwareResult = await deviceManagementService.DeleteFirmwareAsync("DeviceFirmwareId");
+            Console.WriteLine(deleteFirmwareResult.DeviceFirmwareId);
+        }
+    }
+}
+```
 
 
 
