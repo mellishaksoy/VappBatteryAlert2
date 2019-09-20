@@ -909,6 +909,202 @@ namespace Platform360.Devices.SDK.Example.ConsoleApp
 }
 ```
 
+1.7.	Area Network Info Related Methods
+1.7.1.	Create Area Network Info Method
+Request
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Info Create Request
+            var createAreaNetworkInfoResult = await deviceManagementService.CreateAreaNetworkInfoAsync(new DeviceAreaNetworkInfoCreateData
+            {
+                Name = "Name",
+                AreaNetworkType = "Area Network Type",
+                ListOfDevices = new List<string> {"CreatedBeforeAreaNetworkDeviceInfoResourceId" }
+            });
+            Console.WriteLine(createAreaNetworkInfoResult.AreaNetworkInfoId);
+        }
+    }
+}
+```
+Response
+
+```csharp
+
+ public class DeviceAreaNetworkInfoResult
+    {
+        public string AreaNetworkInfoId { get; set; }
+        public string Name { get; set; }
+        public string AreaNetworkType { get; set; }
+        public List<string> ListOfDevices { get; set; }
+    }
+
+```
+
+1.7.2.	Retrieve Area Network Info Method
+```csharp
+
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Info Retrieve Request
+            var retrieveAreaNetworkInfoResult = await deviceManagementService.RetrieveAreaNetworkInfoAsync("AreaNetworkInfoId");
+            Console.WriteLine(retrieveAreaNetworkInfoResult.AreaNetworkInfoId);
+        }
+    }
+}
+
+```
+
+1.7.3.	Update Area Network Info Method
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Info Update Request
+            var updateAreaNetworkInfoResult = await deviceManagementService.UpdateAreaNetworkInfoAsync(new DeviceAreaNetworkInfoUpdateData
+            {
+                AreaNetworkInfoId = "AreaNetworkInfoId",
+                AreaNetworkType = "Update Area Network Type",
+                ListOfDevices = new List<string> { "CreatedBeforeAreaNetworkDeviceInfoResourceId", "CreatedBeforeAreaNetworkDeviceInfoResourceId2" }
+            });
+            Console.WriteLine(updateAreaNetworkInfoResult.AreaNetworkInfoId);
+        }
+    }
+}
+```
+
+
+1.7.4.	Delete Area Network Info Method
+
+```csharp
+
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Area Network Info Delete Request
+            var deleteAreaNetworkInfoResult = await deviceManagementService.DeleteAreaNetworkInfoAsync("AreaNetworkInfoId");
+            Console.WriteLine(deleteAreaNetworkInfoResult.AreaNetworkInfoId);
+        }
+    }
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --------------------------
 ---------------------------
 
