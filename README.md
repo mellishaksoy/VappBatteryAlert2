@@ -8,7 +8,6 @@ Request
 using Platform360.Devices.SDK.Client.Options;
 using Platform360.Devices.SDK.Client.RegistrationService;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Platform360.Devices.SDK.Example.ConsoleApp
@@ -17,21 +16,20 @@ namespace Platform360.Devices.SDK.Example.ConsoleApp
     {
         async static Task Main(string[] args)
         {
-            // Definition of device Client Options
+            // Mqtt Client Options
             var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
                     .WithClientId("Allowed AE ID")
                     .WithCSEId("CSE ID")
-                    .WithMqttOptions("Mqtt Server PoA", 1883, 120)
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
                     .Build();
-            
+
             // Registration Service Call
             IRegistrationServiceFactory _registrationServiceFactory = new RegistrationServiceFactory();
             var _registrationService = _registrationServiceFactory.CreateRegistrationService(deviceMqttClientOptions);
-            
+
             // Device Registration to system
-            var deviceRegistrationResult = await _registrationService.RegisterDeviceAsync("Device Name", new List<string> { "http://pointOfAccessUrl.com" });
-            Console.WriteLine("Device ID: " + deviceRegistrationResult.DeviceId + " Device Name: " +
-                deviceRegistrationResult.DeviceName +" Point of Access: "+ deviceRegistrationResult.PoA);
+            var deviceRegistrationResult = await _registrationService.RegisterDeviceAsync("Device Name");
+            Console.WriteLine("Device ID: " + deviceRegistrationResult.DeviceId + " Device Name: " + deviceRegistrationResult.DeviceName);
 
             Console.ReadLine();
         }
@@ -49,7 +47,6 @@ public class DeviceRegistrationResult
     {
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
-        public IList<string> PoA { get; set; }
     }
 
 ```
@@ -697,16 +694,220 @@ Response
     }
 ```
 
+1.6.	Device Info Related Methods
+1.6.1.	Create Device Info Method
+
+Request
+-----
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Physical Device Info Create Request
+            var createPhysicalDeviceInfoResult = await deviceManagementService.CreatePhysicalDeviceInfoAsync(new DeviceGeneralInfoCreateData
+            {
+                Name = "Physical Device Name",
+                DeviceLabel = "Device Label",
+                Manufacturer = "Manufacturer",
+                Model = "Device Model",
+                DeviceType = "Device Type"
+            });
+            Console.WriteLine(createPhysicalDeviceInfoResult.DeviceGeneralInfoId);
+        }
+    }
+}
+```
 
 
+Response
+-----
+```csharp
+	 public class DeviceGeneralInfoResult
+    {
+        public string DeviceGeneralInfoId { get; set; }
+
+        public string Name { get; set; }
+
+        public string DeviceLabel { get; set; }
+
+        public string Manufacturer { get; set; }
+
+        public string Model { get; set; }
+
+        public string DeviceType { get; set; }
+
+        public string FirmwareVersion { get; set; }
+
+        public string SoftwareVersion { get; set; }
+
+        public string HardwareVersion { get; set; }
+
+        public string ManufacturerDetailsLink { get; set; }
+
+        public string ManufacturingDate { get; set; }
+
+        public string SubModel { get; set; }
+
+        public string DeviceName { get; set; }
+
+        public string OsVersion { get; set; }
+
+        public string Country { get; set; }
+
+        public string Location { get; set; }
+
+        public string SystemTime { get; set; }
+
+        public List<string> SupportURL { get; set; }
+
+        public List<string> PresentationURL { get; set; }
+
+        public List<string> Protocol { get; set; }
+
+    }
+```
+
+1.6.2.	Retrieve Device Info Method
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // Physical Device Info Retrieve Request
+            var retrievePhysicalDeviceInfoResult = await deviceManagementService.RetrievePhysicalDeviceInfoAsync("Physical Device Info Id");
+            Console.WriteLine(retrievePhysicalDeviceInfoResult.DeviceName);
+        }
+    }
+}
+```
+1.6.3.	Update Device Info Method
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // // Physical Device Info Update Request
+            var updatePhysicalDeviceInfoResult = await deviceManagementService.UpdatePhysicalDeviceInfoAsync(new DeviceGeneralInfoUpdateData
+            {
+                DeviceGeneralInfoId = "Physical Device Id",
+                OsVersion = "Os Version"
+            });
+            Console.WriteLine(updatePhysicalDeviceInfoResult.DeviceName);
+        }
+    }
+}
+```
 
 
+1.6.3.	Delete Device Info Method
 
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
 
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
 
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
 
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
 
-
+            // Physical Device Info Delete Request
+            var deletePhysicalDeviceInfoResult = await deviceManagementService.DeletePhysicalDeviceInfoAsync("Physical Device Info Id");
+            Console.WriteLine(deletePhysicalDeviceInfoResult.DeviceName);
+        }
+    }
+}
+```
 
 --------------------------
 ---------------------------
