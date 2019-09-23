@@ -47,6 +47,7 @@ Request
 ```js
 import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
 import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { SensorService } from './sensorservice/sensor-service';
 
 var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
 
@@ -57,10 +58,21 @@ var options = mqttOptionsBuilder
   .build();
 
   var deviceManagementService = new DeviceManagementService(options);
+  
+  // Create Sensor Service with Mqtt Options 
+var sensorService = new SensorService(options);
 
 (async () => {
 
+  // Hangi servisin fonksiyonları kullanılacaksa öncesinde o servisin platforma connect olması bekleniyor.
+  // Bu connection işleminde gerekli resource ve propertiler servis objelerine yüklenmektedir.
+
+  // Device Management Service Connection to Platform
   await deviceManagementService.connectToPlatformAsync();
+  
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
 })();
 
 
@@ -225,7 +237,16 @@ var options = mqttOptionsBuilder
 ```
 
 
+-----------
+--------------
+2.4.	Battery Related Methods
+2.4.1.	Create Battery Method
+Request
 
+```js
+
+
+```
 
 
 Response
@@ -235,7 +256,48 @@ Response
 
 ```
 
+2.4.2.	Retrieve Battery Method
 
+Request
+
+```js
+
+
+```
+
+
+Response
+
+```js
+
+
+
+2.4.3.	Update Battery Method
+Request
+
+```js
+
+
+```
+
+
+Response
+
+```js
+
+
+2.4.4.	Delete Battery Method
+Request
+
+```js
+
+
+```
+
+
+Response
+
+```js
 
 
 
