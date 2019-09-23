@@ -40,10 +40,200 @@ export class DeviceRegistrationResult {
 
 ```
 
+2.2.	Connect to Platform Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  var deviceManagementService = new DeviceManagementService(options);
+
+(async () => {
+
+  await deviceManagementService.connectToPlatformAsync();
+})();
+
+
+```
+
+2.3.	Sensor Related Methods
+2.3.1.	Sensor Creation Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { SensorService } from './sensorservice/sensor-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+// Mqtt Client Options
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+// Create Sensor Service with Mqtt Options 
+var sensorService = new SensorService(options);
+
+(async () => {
+
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
+  
+  // create bidirectional sensor
+  var bidirectionalSensor = await sensorService.createSensor("SensorName", true);
+  console.log(bidirectionalSensor);
+})();
+
+
+```
+
+
+Response
+
+```js
+export class SensorCreationResult {
+  public SensorId: string;
+  public Name: string;
+}
+
+```
+
+2.3.2.	Sensor Deletion Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { SensorService } from './sensorservice/sensor-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Sensor Service with Mqtt Options 
+  var sensorService = new SensorService(options);
+
+(async () => {
+
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
+
+  // Delete Sensor
+  let deletedSensor = await sensorService.deleteSensor("sensorId");
+  console.log(deletedSensor);
+  
+})();
+
+
+```
+
+Response
+
+```js
+export class SensorDeletionResult {
+  public SensorId: string;
+  public Name: string;
+}
+
+```
+
+
+2.3.3.	Push Sensor Data to Platform Method
+Request 1
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { SensorService } from './sensorservice/sensor-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Sensor Service with Mqtt Options 
+  var sensorService = new SensorService(options);
+
+(async () => {
+
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
+
+  // Create sensor
+  var sensor = await sensorService.createSensor("SensorName", false);
+  console.log(sensor);
+
+  // Push data to sensor
+  await sensorService.pushSensorDataToPlatform(sensor.SensorId,"SensorValue");
+
+})();
+
+
+```
+
+Request 2
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { SensorService } from './sensorservice/sensor-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Sensor Service with Mqtt Options 
+  var sensorService = new SensorService(options);
+
+(async () => {
+
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
+
+  // Get All Sensors
+  let sensors = await sensorService.getSensors();
+
+  if(!sensors && sensors.length > 0){
+    // push data first sensor on sensor list with formatted data as unit, extracted data and raw data
+    await sensorService.pushSensorFormattedDataToPlatform(sensors[0].Id, "raw data", "data unit(ex: Celsius)","extracted value (ex: 25)");
+  }
+})();
+
+
+```
 
 
 
 
+
+Response
+
+```js
+
+
+```
 
 
 
