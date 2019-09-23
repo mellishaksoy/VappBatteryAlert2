@@ -1,3 +1,84 @@
+
+-------------
+NODE.JS SDK
+------------
+
+2.	Device SDK for Node.js Supported Methods
+2.1.	Device Registration Method
+Request
+
+
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { RegistrationService } from './registrationservice/registration-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+var registrationService = new RegistrationService(options);
+
+(async () => {
+
+let result = await registrationService.register('deviceName');
+console.log(result);
+})();
+
+```
+
+```js
+export class DeviceRegistrationResult {
+  public DeviceId: string;
+  public DeviceName: string;
+  public PoA: string[];
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------
+.NET SDK
+-------------------
+
 Device Registration Method
 
 Request
