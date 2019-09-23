@@ -404,6 +404,14 @@ var options = mqttOptionsBuilder
 ```
 
 
+2.5.	Memory Related Methods
+2.5.1.	Create Memory Method
+Request
+```js
+
+```
+
+
 Response
 
 ```js
@@ -411,8 +419,47 @@ Response
 ```
 
 
+2.5.2.	Retrieve Memory Method
+
+Request
+```js
+
+```
 
 
+Response
+
+```js
+
+```
+
+2.5.3.	Update Memory Method
+Request
+```js
+
+```
+
+
+Response
+
+```js
+
+```
+
+
+2.5.4.	Delete Memory Method
+
+Request
+```js
+
+```
+
+
+Response
+
+```js
+
+```
 
 
 
