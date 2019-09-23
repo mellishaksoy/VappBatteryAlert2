@@ -408,14 +408,50 @@ var options = mqttOptionsBuilder
 2.5.1.	Create Memory Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceMemoryCreateData } from './devicemanagementservice/internal/device-memory-create-data';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set update memory data 
+  var memoryCreateData = new DeviceMemoryCreateData();
+  memoryCreateData.Name = "Memory Name";
+  memoryCreateData.TotalMemory =  8589934592 ; // bytes - 1 GB
+  memoryCreateData.AvailableMemory = 4194304000; // bytes - 500 MB
+
+  // create memory request 
+  var memory = await deviceManagementService.createMemory(memoryCreateData);
+
+  console.log(memory);
+})();
 ```
 
 
 Response
 
 ```js
-
+export class DeviceMemoryResult {
+  MemoryId: string;
+  Name: string;
+  TotalMemory?: number;
+  AvailableMemory?: number;
+}
 ```
 
 
@@ -423,35 +459,104 @@ Response
 
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+
+  // retrieve memory request 
+  var memory = await deviceManagementService.retrieveMemory("memoryId");
+
+  console.log(memory);
+})();
 ```
 
 
-Response
-
-```js
-
-```
 
 2.5.3.	Update Memory Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceMemoryUpdateData } from './devicemanagementservice/internal/device-memory-update-data';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set update memory data 
+  var memoryUpdateData = new DeviceMemoryUpdateData();
+  memoryUpdateData.MemoryId = "memoryId";
+  memoryUpdateData.AvailableMemory = 4194304000; // bytes - 500 MB
+
+  // update memory request belongs to given memory id with new data
+  var memory = await deviceManagementService.updateMemory(memoryUpdateData);
+
+  console.log(memory);
+})();
 ```
 
-
-Response
-
-```js
-
-```
 
 
 2.5.4.	Delete Memory Method
 
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+
+  // retrieve memory request 
+  var memory = await deviceManagementService.deleteMemory("memoryId");
+
+  console.log(memory);
+})();
 ```
 
 
@@ -462,19 +567,291 @@ Response
 ```
 
 
+2.6.	Device Info Related Methods
+2.6.1.	Create Device Info Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DevicePhysicalDeviceCreateData } from './devicemanagementservice/internal/device-physical-device-create-data'
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to create physical device with mandatory fields
+  var physicalDeviceCreateData = new DevicePhysicalDeviceCreateData();
+  physicalDeviceCreateData.Name = "Physical Device Name";
+  physicalDeviceCreateData.DeviceLabel = "Device Label";
+  physicalDeviceCreateData.Manufacturer = "Manufacturer";
+  physicalDeviceCreateData.Model = "Model";
+  physicalDeviceCreateData.DeviceType = "Device Type";
 
 
+  // create physical device info request 
+  var physicalDeviceInfo = await deviceManagementService.createPhysicalDeviceInfo(physicalDeviceCreateData);
+
+  console.log(physicalDeviceInfo);
+})();
+```
+
+Response
+
+```js
+export class DevicePhysicalDeviceInfoResult {
+  PhysicalDeviceInfoId: string;
+  Name: string;
+  DeviceLabel: string;
+  Manufacturer: string;
+  Model: string;
+  DeviceType: string;
+  FirmwareVersion: string;
+  SoftwareVersion: string;
+  HardwareVersion: string;
+  ManufacturerDetailsLink: string;
+  ManufacturingDate: string;
+  SubModel: string;
+  DeviceName: string;
+  OsVersion: string;
+  Country: string;
+  Location: string;
+  SystemTime: string;
+  SupportURL: string[];
+  PresentationURL: string[];
+  Protocol: string[];
+}
+```
+
+2.6.2.	Retrieve Device Info Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // retrieve physical device info request 
+  var physicalDeviceInfo = await deviceManagementService.retrievePhysicalDeviceInfo("physicalDeviceInfoId");
+
+  console.log(physicalDeviceInfo);
+})();
+```
+
+2.6.3.	Update Device Info Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DevicePhysicalDeviceUpdateData } from './devicemanagementservice/internal/device-physical-device-update-data'
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to update physical device 
+  var physicalDeviceUpdateData = new DevicePhysicalDeviceUpdateData();
+  physicalDeviceUpdateData.PhysicalDeviceInfoId = "PhysicalDeviceInfoId";
+  physicalDeviceUpdateData.OsVersion  = "OsVersion";
 
 
+  // update physical device info request 
+  var physicalDeviceInfo = await deviceManagementService.updatePhysicalDeviceInfo(physicalDeviceUpdateData);
+
+  console.log(physicalDeviceInfo);
+})();
+```
+
+2.6.4.	Delete Device Info Method
+
+Request
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
 
 
+  // delete physical device info request 
+  var physicalDeviceInfo = await deviceManagementService.deletePhysicalDeviceInfo("physicalDeviceInfoId");
 
+  console.log(physicalDeviceInfo);
+})();
+```
 
+2.7.	Area Network Info Related Methods
+2.7.1.	Create Area Network Info Method
+Request
+```js
 
+```
 
+Response
+```js
 
+```
 
+2.7.2.	Retrieve Area Network Info Method
 
+Request
+```js
+
+```
+
+2.7.3.	Update Area Network Info Method
+
+Request
+```js
+
+```
+
+2.7.4.	Delete Area Network Info Method
+
+Request
+```js
+
+```
+
+2.8.	Area Network Device Info Related Methods
+2.8.1.	Create Area Network Device Info Method
+Request
+```js
+
+```
+
+Response
+```js
+
+```
+
+2.8.2.	Retrieve Area Network Device Info Method
+Request
+```js
+
+```
+
+2.8.3.	Update Area Network Device Info Method
+Request
+```js
+
+```
+2.8.4.	Delete Area Network Device Info Method
+Request
+```js
+
+```
+
+2.9.	Reboot Related Methods
+2.9.1.	Create Reboot Method
+Request
+```js
+
+```
+
+2.9.2.	Retrieve Reboot Method
+Request
+```js
+
+```
+
+2.9.3.	Update Reboot Method
+Request
+```js
+
+```
+
+2.9.4.	Delete Reboot Method
+Request
+```js
+
+```
+
+2.10.	Firmware Related Methods
+2.10.1.	Create Firmware Method
+Request
+```js
+
+```
+
+2.10.2.	Retrieve Firmware Method
+
+Request
+```js
+
+```
+2.10.3.	Update Firmware Method
+Request
+```js
+
+```
+
+2.10.4. Delete Firmware Method
+Request
+```js
+
+```
 
 
 
