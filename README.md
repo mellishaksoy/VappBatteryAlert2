@@ -745,40 +745,451 @@ var options = mqttOptionsBuilder
 2.7.1.	Create Area Network Info Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { AreaNetworkInfoCreateData } from './devicemanagementservice/internal/area-network-info-create-data'
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to create Area Network Info
+  var areaNetworkInfoCreate = new AreaNetworkInfoCreateData();
+  areaNetworkInfoCreate.Name = "Area Network Info Name";
+  areaNetworkInfoCreate.AreaNetworkType = "Area Network Type";
+  areaNetworkInfoCreate.ListOfDevices = ["CreatedBeforeAreaNetworkDeviceInfoResourceId"];
+
+
+  // create AreaNetworkInfo request 
+  var areaNetworkInfo = await deviceManagementService.createAreaNetworkInfo(areaNetworkInfoCreate);
+
+  console.log(areaNetworkInfo);
+})();
 ```
 
 Response
 ```js
-
+export class AreaNetworkInfoResult {
+  AreaNetworkInfoId: string;
+  Name: string;
+  AreaNetworkType: string;
+  ListOfDevices: string[];
+}
 ```
 
 2.7.2.	Retrieve Area Network Info Method
 
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // retrieve Area Network Info by Id 
+  var areaNetworkInfo = await deviceManagementService.retrieveAreaNetworkInfo("AreaNetworkInfoId");
+
+  console.log(areaNetworkInfo);
+})();
 ```
 
 2.7.3.	Update Area Network Info Method
 
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { AreaNetworkInfoUpdateData } from './devicemanagementservice/internal/area-network-info-update-data'
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to update AreaNetworkInfo
+  var areaNetworkInfoUpdateData = new AreaNetworkInfoUpdateData();
+  areaNetworkInfoUpdateData.AreaNetworkType = "Area Network Type";
+  areaNetworkInfoUpdateData.ListOfDevices = ["CreatedBeforeAreaNetworkDeviceInfoResourceId","CreatedBeforeAreaNetworkDeviceInfoResourceId2"];
+
+
+  // update Area Network Info request 
+  var areaNetworkInfo = await deviceManagementService.updateAreaNetworkInfo(areaNetworkInfoUpdateData);
+
+  console.log(areaNetworkInfo);
+})();
 ```
 
 2.7.4.	Delete Area Network Info Method
 
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // delete Area Network Info by Id 
+  var areaNetworkInfo = await deviceManagementService.deleteAreaNetworkInfo("AreaNetworkInfoId");
+
+  console.log(areaNetworkInfo);
+})();
 ```
 
 2.8.	Area Network Device Info Related Methods
 2.8.1.	Create Area Network Device Info Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { AreaNetworkDeviceInfoCreateData } from './devicemanagementservice/internal/area-network-device-info-create-data';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to create Area Network Device Info
+  var areaNetworkDeviceInfoCreateData = new AreaNetworkDeviceInfoCreateData();
+  areaNetworkDeviceInfoCreateData.Name = "Area Network Device Info Name";
+  areaNetworkDeviceInfoCreateData.DevID = "DevID";
+  areaNetworkDeviceInfoCreateData.DevType = "DevType";
+  areaNetworkDeviceInfoCreateData.AreaNetworkId = "AreaNetworkId";
+  areaNetworkDeviceInfoCreateData.ListOfNeighbors = ["Neighbor1"];
+
+
+  // create Area Network Device Info request 
+  var areaNetworkDeviceInfo = await deviceManagementService.createAreaNetworkDeviceInfo(areaNetworkDeviceInfoCreateData);
+
+  console.log(areaNetworkDeviceInfo);
+})();
+```
+
+Response
+```js
+export class AreaNetworkDeviceInfoResult {
+  AreaNetworkDeviceInfoId: string;
+  Name: string;
+  DevID: string;
+  DevType: string;
+  DevStatus: string;
+  AreaNetworkId: string;
+  SleepInterval?: number;
+  SleepDuration?: number;
+  ListOfNeighbors: string[];
+}
+```
+
+2.8.2.	Retrieve Area Network Device Info Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // retrieve Area Network Device Info request 
+  var areaNetworkDeviceInfo = await deviceManagementService.retrieveAreaNetworkDeviceInfo("AreaNetworkDeviceInfoId");
+
+  console.log(areaNetworkDeviceInfo);
+})();
+```
+
+2.8.3.	Update Area Network Device Info Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { AreaNetworkDeviceInfoUpdateData } from './devicemanagementservice/internal/area-network-device-info-update-data';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to update Area Network Device Info
+  var areaNetworkDeviceInfoUpdateData = new AreaNetworkDeviceInfoUpdateData();
+  areaNetworkDeviceInfoUpdateData.AreaNetworkDeviceInfoId = "AreaNetworkDeviceInfoId";
+  areaNetworkDeviceInfoUpdateData.DevStatus = "Sleeping";
+
+  // update Area Network Device Info request 
+  var areaNetworkDeviceInfo = await deviceManagementService.updateAreaNetworkDeviceInfo(areaNetworkDeviceInfoUpdateData);
+
+  console.log(areaNetworkDeviceInfo);
+})();
+```
+2.8.4.	Delete Area Network Device Info Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // delete Area Network Device Info request 
+  var areaNetworkDeviceInfo = await deviceManagementService.deleteAreaNetworkDeviceInfo("AreaNetworkDeviceInfoId");
+
+  console.log(areaNetworkDeviceInfo);
+})();
+```
+
+2.9.	Reboot Related Methods
+2.9.1.	Create Reboot Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceRebootCreateData } from './devicemanagementservice/internal/device-reboot-create-data';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to create Reboot
+  var rebootCreateData = new DeviceRebootCreateData();
+  rebootCreateData.Name = "Reboot Name";
+  rebootCreateData.Reboot = true;
+
+  // create Reboot request 
+  var reboot = await deviceManagementService.createReboot(rebootCreateData);
+
+  console.log(reboot);
+})();
+```
+
+
+Response
+```js
+export class DeviceRebootResult {
+  DeviceRebootId: string;
+  Name: string;
+  IsFactoryReset?: boolean;
+  Reboot?: boolean;
+}
+```
+
+
+2.9.3.	Update Reboot Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceRebootUpdateData } from './devicemanagementservice/internal/device-reboot-update-data';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to update Reboot
+  var rebootUpdateData = new DeviceRebootUpdateData();
+  rebootUpdateData.DeviceRebootId = "DeviceRebootId";
+  rebootUpdateData.IsFactoryReset = true;
+
+  // update Reboot request 
+  var reboot = await deviceManagementService.updateReboot(rebootUpdateData);
+
+  console.log(reboot);
+})();
+```
+
+2.9.4.	Delete Reboot Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // delete Reboot request 
+  var reboot = await deviceManagementService.deleteReboot("DeviceRebootId");
+
+  console.log(reboot);
+})();
+```
+
+2.10.	Firmware Related Methods
+2.10.1.	Create Firmware Method
+Request
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceFirmwareCreateData } from './devicemanagementservice/internal/device-firmware-create-data';
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to create Firmware
+  var firmwareCreateData = new DeviceFirmwareCreateData();
+  firmwareCreateData.Name = "Firmware Name";
+  firmwareCreateData.Version = "Version";
+  firmwareCreateData.URL = "URL";
+  firmwareCreateData.Update = true;
+
+  // create Firmware request 
+  var firmware = await deviceManagementService.createFirmware(firmwareCreateData);
+
+  console.log(firmware);
+})();
 ```
 
 Response
@@ -786,71 +1197,69 @@ Response
 
 ```
 
-2.8.2.	Retrieve Area Network Device Info Method
-Request
-```js
-
-```
-
-2.8.3.	Update Area Network Device Info Method
-Request
-```js
-
-```
-2.8.4.	Delete Area Network Device Info Method
-Request
-```js
-
-```
-
-2.9.	Reboot Related Methods
-2.9.1.	Create Reboot Method
-Request
-```js
-
-```
-
-2.9.2.	Retrieve Reboot Method
-Request
-```js
-
-```
-
-2.9.3.	Update Reboot Method
-Request
-```js
-
-```
-
-2.9.4.	Delete Reboot Method
-Request
-```js
-
-```
-
-2.10.	Firmware Related Methods
-2.10.1.	Create Firmware Method
-Request
-```js
-
-```
-
-2.10.2.	Retrieve Firmware Method
-
-Request
-```js
-
-```
 2.10.3.	Update Firmware Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceFirmwareUpdateData } from './devicemanagementservice/internal/device-firmware-update-data';
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
 
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // set data to update Firmware
+  var firmwareUpdateData = new DeviceFirmwareUpdateData();
+  firmwareUpdateData.Version = "Version2";
+  firmwareUpdateData.Update = false;
+
+  // update Firmware request 
+  var firmware = await deviceManagementService.updateFirmware(firmwareUpdateData);
+
+  console.log(firmware);
+})();
 ```
 
 2.10.4. Delete Firmware Method
 Request
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // delete Firmaware request 
+  var firmware = await deviceManagementService.deleteFirmware("FirmwareId");
+
+  console.log(firmware);
+})();
 ```
 
 
