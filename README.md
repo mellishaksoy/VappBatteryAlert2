@@ -245,14 +245,53 @@ Request
 
 ```js
 
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceBatteryCreateData } from './devicemanagementservice/internal/device-battery-create-data';
+import { BatteryStatus } from './onem2m/resources/battery-status';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // data settings belongs to creating battery
+  var deviceBatteryCreateData = new DeviceBatteryCreateData;
+  deviceBatteryCreateData.Name = "BatteryName";
+  deviceBatteryCreateData.BatteryStatus = BatteryStatus.Charging;
+  deviceBatteryCreateData.BatteryLevel = 2;
+  
+  // Create battery request
+  var battery = await deviceManagementService.createBattery(deviceBatteryCreateData);
+  console.log(battery);
+  
+})();
 ```
 
 
 Response
 
 ```js
+import { BatteryStatus } from '../../onem2m/resources/battery-status';
 
+export class DeviceBatteryResult {
+  BatteryId: string;
+  Name: string;
+  BatteryLevel?: number;
+  BatteryStatus?: BatteryStatus;
+}
 
 ```
 
@@ -262,13 +301,32 @@ Request
 
 ```js
 
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // retrieve battery request belongs to given battery id 
+  var battery = await deviceManagementService.retrieveBattery("batteryId");
+
+  console.log(battery);
+})();
 ```
-
-
-Response
-
-```js
 
 
 
@@ -276,21 +334,72 @@ Response
 Request
 
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceBatteryUpdateData } from './devicemanagementservice/internal/device-battery-update-data';
+import { BatteryStatus } from './onem2m/resources/battery-status';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  var updateBatteryData = new DeviceBatteryUpdateData();
+  updateBatteryData.BatteryId = "batteryId";
+  updateBatteryData.BatteryLevel = 100;
+  updateBatteryData.BatteryStatus = BatteryStatus.ChargingComplete;
+
+  // update battery request belongs to given battery id with new data
+  var battery = await deviceManagementService.updateBattery(updateBatteryData);
+
+  console.log(battery);
+})();
 
 ```
 
-
-Response
-
-```js
 
 
 2.4.4.	Delete Battery Method
 Request
 
 ```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
 
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // delete battery request belongs to given battery id 
+  var battery = await deviceManagementService.deleteBattery("batteryId");
+
+  console.log(battery);
+})();
 
 ```
 
@@ -299,7 +408,7 @@ Response
 
 ```js
 
-
+```
 
 
 
