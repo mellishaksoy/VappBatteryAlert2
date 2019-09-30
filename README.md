@@ -1,7 +1,286 @@
+.NET Sensor Event Handler
+```csharp
+using Platform360.Devices.SDK.Client;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Service Call
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+            var _deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            // Device Service Connection To Platform
+            // Here the related resources and properties are loaded to device service objects
+            await _deviceService.ConnectToPlatformAsync();
+			
+			// notification event when new sensor value is added.
+            _deviceService.UseSensorValueChangeRequestHandler(async e =>
+            {
+                Console.WriteLine(e.SensorId);
+                Console.WriteLine(e.Value);
+            });
+
+            // Sensor Creation
+            // Parameters: Sensor Name and isBidirectional
+            var sensorResult = await _deviceService.CreateSensorAsync("Sensor Name", true);
+            Console.WriteLine("Sensor Id: " + sensorResult.SensorId + "Sensor Name: " + sensorResult.Name);
+            
+            // Add Sensor Data as raw value and unit
+            await _deviceService.PushSensorDataToPlatformAsync(sensorResult.SensorId, "36.5 celcius degree", "celcius", "36.5");
+
+
+            Console.ReadLine();
+        }
+    }
+}
+```
+
+-------
+REBOOT HANDLER
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+using Platform360.Devices.SDK.Client;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+			// notification event when new reboot update request is processed
+            deviceManagementService.UseDeviceManagementRebootFunctionHandler(async e =>
+            {
+                Console.WriteLine("Reboot update request is handled.");
+                Console.WriteLine("Reboot = " + e.Reboot);
+                Console.WriteLine("IsFactoryReset = " + e.IsFactoryReset);
+            });
+            // Reboot Update Request
+            var updateRebootResult = await deviceManagementService.UpdateRebootAsync(new DeviceRebootUpdateData
+            {
+                DeviceRebootId = "DeviceRebootId",
+                Reboot = true
+            });
+            Console.WriteLine(updateRebootResult.DeviceRebootId);
+        }
+    }
+}
+```
+
+--------------
+FIRMWARE HANDLER
+
+```csharp
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+using Platform360.Devices.SDK.Client;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            // Mqtt Client Options
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("Allowed AE ID")
+                    .WithCSEId("CSE ID")
+                    .WithMqttOptions("Mqtt PoA", 1883, 120)
+                    .Build();
+
+            // Device Management Service Creation with Mqtt Client Options
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+
+            // Device Management Service Connection To Platform
+            // Here the related resources and properties are loaded to device management service objects
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            // notification event when new firmware update request is processed
+            deviceManagementService.UseDeviceManagementFirmwareFunctionHandler(async e =>
+            {
+                Console.WriteLine("Firmware update request is handled.");
+                Console.WriteLine("Update = " + e.Update);
+            });
+
+            // Firmware Update Request
+            var updateFirmwareResult = await deviceManagementService.UpdateFirmwareAsync(new DeviceFirmwareUpdateData
+            {
+                Version = "Update Version",
+                Update = true
+            });
+            Console.WriteLine(updateFirmwareResult.Version);
+        }
+    }
+}
+```
 
 -------------
 NODE.JS SDK
 ------------
+
+----------------
+Sensor Event Handler
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { SensorService } from './sensorservice/sensor-service';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+// Mqtt Client Options
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+// Create Sensor Service with Mqtt Options 
+var sensorService = new SensorService(options);
+
+(async () => {
+
+  // Sensor Service Connection to Platform
+  // Here Related resources and properties are loaded to sensorService objects
+  await sensorService.connectToPlatformAsync();
+  
+  // notification event when new sensor value is added.
+  sensorService.setSensorValueChangeRequestNotificationEventHandler(async(e) => {
+    console.log(e.SensorId);
+    console.log("pushed new data to sensor id = " + e.SensorId);
+  });
+  
+  // create bidirectional sensor
+  var bidirectionalSensor = await sensorService.createSensor("SensorName", true);
+  console.log(bidirectionalSensor);
+
+  await sensorService.pushSensorFormattedDataToPlatform(bidirectionalSensor.SensorId, "36.5 celcius degree", "celcius", "36.5");
+
+
+})();
+```
+
+------------
+REBOOT NOTIFICATION EVENT HANDLER
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceRebootUpdateData } from './devicemanagementservice/internal/device-reboot-update-data';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // notification event when new reboot update request is processed
+  deviceManagementService.setRebootRequestNotificationEventHandler(async(e) => {
+    console.log("updated reboot id = " + e.DeviceRebootId);
+  });
+
+  // set data to update Reboot
+  var rebootUpdateData = new DeviceRebootUpdateData();
+  rebootUpdateData.DeviceRebootId = "DeviceRebootId";
+  rebootUpdateData.IsFactoryReset = true;
+
+  // update Reboot request 
+  var reboot = await deviceManagementService.updateReboot(rebootUpdateData);
+
+  console.log(reboot);
+})();,
+```
+
+--------------
+FIRMWARE HANDLER
+
+```js
+import { DeviceClientMqttOptionsBuilder } from './internal/options/device-client-options-builder';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceFirmwareUpdateData } from './devicemanagementservice/internal/device-firmware-update-data';
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('bve-sol')
+  .withClientId('CAE38dde70b-e7cc-4b4d-bf48-8c9adfdaca98')
+  .withMqttOptions('127.0.0.1', 1886, 300000)
+  .build();
+
+  // Create Device Management Service with Mqtt Options 
+  var deviceManagementService = new DeviceManagementService(options);
+  
+
+(async () => {
+
+  // Device Management Service Connection to Platform
+  await deviceManagementService.connectToPlatformAsync();
+
+  // notification event when new firmware update request is processed
+  deviceManagementService.setFirmwareRequestNotificationEventHandler(async(e) => {
+    console.log("updated firmware id = " + e.DeviceFirmwareId);
+  });
+
+  // set data to update Firmware
+  var firmwareUpdateData = new DeviceFirmwareUpdateData();
+  firmwareUpdateData.DeviceFirmwareId = "DeviceFirmwareId";
+  firmwareUpdateData.Version = "Version2";
+  firmwareUpdateData.Update = false;
+
+  // update Firmware request 
+  var firmware = await deviceManagementService.updateFirmware(firmwareUpdateData);
+
+  console.log(firmware);
+})();
+
+```
+
+-------------------------
 
 2.	Device SDK for Node.js Supported Methods
 2.1.	Device Registration Method
@@ -121,6 +400,10 @@ export class SensorCreationResult {
 }
 
 ```
+
+
+
+---------------
 
 2.3.2.	Sensor Deletion Method
 
@@ -1424,6 +1707,7 @@ Response
         public string Name { get; set; }
     }
 ```
+
 1.3.2.	Sensor Deletion Method
 
 Request
