@@ -1,3 +1,18 @@
+
+```js
+import { ActionStatus } from '../../onem2m/resources/action-status';
+
+export class DeviceFirmwareResult {
+    public DeviceFirmwareId: string;
+    public Version: string;
+    public Name: string;
+    public URL: string;
+    public Update?: boolean;
+    public UpdateStatus: ActionStatus;
+}
+
+```
+
 .NET Sensor Event Handler
 ```csharp
 using Platform360.Devices.SDK.Client;
