@@ -1,4 +1,171 @@
 
+```csharp
+using Platform360.Devices.SDK.Client.Options;
+using Platform360.Devices.SDK.Communicator;
+using System;
+using System.Threading.Tasks;
+using Platform360.Devices.SDK.Client;
+using Platform360.Devices.SDK.Client.RegistrationService;
+using Platform360.Devices.SDK.Client.DeviceManagementService.Internal;
+using Platform360.Devices.SDK.OneM2M.Resources.MgmtResources;
+
+namespace Platform360.Devices.SDK.Example.ConsoleApp
+{
+    class Program
+    {
+        async static Task Main(string[] args)
+        {
+            var deviceMqttClientOptions = new DeviceClientOptionsBuilder()
+                    .WithClientId("testcse")
+                    .WithCSEId("testclientid")
+                    .WithMqttOptions("127.0.0.1", 1886, 120)
+                    .Build();
+
+            IRegistrationServiceFactory _registrationServiceFactory = new RegistrationServiceFactory();
+            IDeviceManagementServiceFactory _deviceManagementServiceFactory = new DeviceManagementServiceFactory();
+            IDeviceServiceFactory _deviceServiceFactory = new DeviceServiceFactory();
+
+            var registrationService = _registrationServiceFactory.CreateRegistrationService(deviceMqttClientOptions);
+            var deviceManagementService = _deviceManagementServiceFactory.CreateDeviceManagementService(deviceMqttClientOptions);
+			var deviceService = _deviceServiceFactory.CreateDeviceService(deviceMqttClientOptions);
+
+            await registrationService.RegisterDeviceAsync("TestCihazı");
+
+            await deviceService.ConnectToPlatformAsync();
+            await deviceManagementService.ConnectToPlatformAsync();
+
+            var exitedSensors = deviceService.Sensors;
+
+            deviceService.UseSensorValueChangeRequestHandler(async e =>
+            {
+                Console.WriteLine(e.SensorId);
+                Console.WriteLine(e.Value);
+            });
+
+            await deviceService.PushSensorDataToPlatformAsync(exitedSensors[0].Id, "OFF");
+            await deviceService.PushSensorDataToPlatformAsync(exitedSensors[0].Id, "ON");
+
+            var battery = new DeviceBatteryCreateData
+            {
+                BatteryLevel = 10,
+                BatteryStatus = BatteryStatus.LowBattery,
+                Name = "Cihaz Bataryası"
+            };
+
+            var batteryBackup = new DeviceBatteryCreateData
+            {
+                BatteryLevel = 100,
+                BatteryStatus = BatteryStatus.Normal,
+                Name = "Cihaz Yedek Batarya"
+            };
+			var reboot = new DeviceRebootCreateData
+            {
+                Name = "Cihaz Reboot/Factory Reset Function"
+            };
+
+            var batteryResult = await deviceManagementService.CreateBatteryAsync(battery);
+            var batteryBackupResult = await deviceManagementService.CreateBatteryAsync(batteryBackup);
+            var rebootResult = await deviceManagementService.CreateRebootAsync(reboot);
+
+            var batteries = await deviceManagementService.GetBatteriesAsync();
+            var memories = await deviceManagementService.GetMemoriesAsync();
+
+            deviceManagementService.UseDeviceManagementRebootFunctionHandler(async e =>
+            {
+                Console.WriteLine(e.IsFactoryReset);
+                Console.WriteLine(e.Reboot);
+            });
+        }
+    }
+
+}
+
+
+```
+
+
+
+
+
+```js
+
+import { DeviceClientMqttOptionsBuilder } from "./internal/options/device-client-options-builder";
+import { SensorService } from './sensorservice/sensor-service';
+import { RegistrationService } from './registrationservice/registration-service';
+import { DeviceBatteryCreateData } from './devicemanagementservice/internal/device-battery-create-data';
+import { BatteryStatus } from './onem2m/resources/battery-status';
+import { DeviceManagementService } from './devicemanagementservice/device-management-service';
+import { DeviceRebootCreateData } from './devicemanagementservice/internal/device-reboot-create-data';
+
+var mqttOptionsBuilder = new DeviceClientMqttOptionsBuilder();
+
+var options = mqttOptionsBuilder
+  .withCSEId('testcse')
+  .withClientId('CAE43166a33-0316-45d3-9b17-91aff28ff161')
+  .withMqttOptions('127.0.0.1', 1886, 120)
+  .build();
+
+var registrationService = new RegistrationService(options);
+var sensorService = new SensorService(options);
+var deviceManagementService = new DeviceManagementService(options);
+
+(async () => {
+
+  await registrationService.register("TestCihazı");
+  await sensorService.connectToPlatformAsync();
+  await deviceManagementService.connectToPlatformAsync();
+
+  let existedSensors = await sensorService.getSensors();
+
+  await sensorService.setSensorValueChangeRequestNotificationEventHandler((sensorId, value) => {
+    console.log(sensorId);
+    console.log(value);
+  });
+
+  await sensorService.pushSensorDataToPlatform(existedSensors[0].Id, "OFF");
+  await sensorService.pushSensorDataToPlatform(existedSensors[0].Id, "ON");
+
+  let battery = new DeviceBatteryCreateData();
+  battery.BatteryLevel = 10;
+  battery.BatteryStatus = BatteryStatus.LowBattery
+  battery.Name = "Cihaz Bataryası";
+  
+  let batteryBackup = new DeviceBatteryCreateData();
+  batteryBackup.BatteryLevel = 100;
+  batteryBackup.BatteryStatus = BatteryStatus.Normal
+  batteryBackup.Name = "Cihaz Yedek Batarya";
+
+  let reboot = new DeviceRebootCreateData();
+  reboot.Name = "Cihaz Reboot/Factory Reset Function";
+
+  await deviceManagementService.setRebootRequestNotificationEventHandler((isRebootRequest, isFactoryResetRequest) => {
+    console.log(isRebootRequest);
+    console.log(isFactoryResetRequest);
+  })
+
+  let batteryResult = await deviceManagementService.createBattery(battery);
+  let batteryBackupResult = await deviceManagementService.createBattery(batteryBackup);
+  let rebootResult = await deviceManagementService.createReboot(reboot);
+
+  let batteries = await deviceManagementService.getBatteries();
+  let memories = await deviceManagementService.getMemories();
+  
+})();
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```js
 import { ActionStatus } from '../../onem2m/resources/action-status';
 
